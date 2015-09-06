@@ -4,7 +4,8 @@
   "description": "A koa router middleware for RESTful API basing on the folder path",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "prepublish": "babel index.js -o veins.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,12 @@
     "glob": "^5.0.14",
     "koa-router": "^5.1.2",
     "methods": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "koa": "^1.0.0",
+    "mocha": "^2.3.0",
+    "should": "^7.1.0",
+    "supertest": "^1.1.0"
   }
 }

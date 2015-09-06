@@ -1,6 +1,6 @@
 'use strict';
 
-let { join } = require('path');
+let {join} = require('path');
 let assert = require('assert');
 let util = require('util');
 let glob = require('glob');
@@ -33,11 +33,12 @@ exports.route = route;
  */
 
 function route (app, path = DEFAULT_PATH) {
-  assert(util.isObject(path), `path should be an object but a ${typeof path}`);
   let controllersPath = join(cwd, path.controllers);
   let filtersPath = join(cwd, path.filters);
 
-  glob.sync(`${controllersPath}/**/*.js`).forEach((path) => _route(path));
+  glob.sync(`${controllersPath}/**/*.+(coffee|js)`)
+    .map((path) => path.slice(cwd.length + 1))
+    .forEach((path) => _route(path));
 
   app.use(router.routes());
   app.use(router.allowedMethods());
@@ -51,9 +52,8 @@ function route (app, path = DEFAULT_PATH) {
 
 function _route (path) {
   let exported = require(`${cwd}/${path}`);
-  let url = path.split('.')[0];
+  let url = `/${path.split('.')[0]}`;
   let outterFilters = [];
-
   if (util.isArray(exported.filters)) {
     exported.filters.forEach((filter) => outFilters.push(require(`${filtersPath}/${path}`)[filter]));
   }
