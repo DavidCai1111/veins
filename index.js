@@ -1,8 +1,8 @@
 'use strict';
 
+let { join } = require('path');
 let assert = require('assert');
 let util = require('util');
-let path = require('path');
 let glob = require('glob');
 let router = require('koa-router')();
 
@@ -36,29 +36,34 @@ process.on('unhandledRejection', (reason) => console.error(`unhandled rejection:
 
 function route (app, path = DEFAULT_PATH) {
   assert(util.isObject(path), `path should be an object but a ${typeof path}`);
-  let controllersPath = path.join(cwd, path.controllers);
-  let filtersPath = path.join(cwd, path.filters);
+  let controllersPath = join(cwd, path.controllers);
+  let filtersPath = join(cwd, path.filters);
 
-  new Promise((resolve, reject) => {
-    glob(controllersPath + '/**/*.js', (err, files) => {
-      if (err) reject(err);
-      resolve(files);
-    });
-  })
-  .then((files) => {
-    files.forEach((path) => {
-      let exported = require(`${cwd}/${path}`);
-      let url = path.split('.')[0];
-      METHODS.forEach((method) => {
-        if (typeof exported[method] === 'function') router[method](url, exported[method]);
-      });
-    });
+  glob.sync(`${controllersPath}/**/*.js`).forEach((path) => _addRouters(path));
 
-    app.use(router.routes());
-    app.use(router.allowedMethods());
-  })
-  .catch((err) => {
-    let msg = err.message;
-    console.error(`uncaught error: ${msg}`);
+  app.use(router.routes());
+  app.use(router.allowedMethods());
+};
+
+function _addRouters (path) {
+  let exported = require(`${cwd}/${path}`);
+  let url = path.split('.')[0];
+  let middlewares = [];
+  let outterFilters = [];
+
+  if (util.isArray(exported.filters)) {
+    exported.filters.forEach((filter) => outFilters.push(require(`${filtersPath}/${path}`)[filter]));
+  }
+
+  METHODS.forEach((method) => {
+    if (typeof exported[method] === 'function') {
+      let innerFilters = [];
+      if (util.isArray(exported[method].filters)) {
+        exported[method].filters.forEach(() => innerFilters.push(require(`${filtersPath}/${path}`)[filter]));
+      }
+      outterFilters.unshift(url);
+      innerFilters.push(exported[method]);
+      router[method].apply(router, outterFilters.concat(innerFilters));
+    }
   });
 };
