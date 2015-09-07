@@ -4,8 +4,9 @@
   "description": "A koa router middleware for RESTful API basing on the folder path",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "prepublish": "babel index.js -o veins.js"
+    "test": "mocha --harmony_arrow_functions",
+    "compile": "babel index.js -o veins.js",
+    "dev": "babel --watch index.js -o venis.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "istanbul": "^0.3.19",
     "koa": "^1.0.0",
     "mocha": "^2.3.0",
     "should": "^7.1.0",

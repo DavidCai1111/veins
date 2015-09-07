@@ -11,7 +11,7 @@ let router = require('koa-router')();
  * @private
  */
 
-const cwd = process.cwd();
+const CWD = process.cwd();
 const DEFAULT_PATH = {
   controllers: './controllers',
   filters: './filters'
@@ -33,40 +33,32 @@ exports.route = route;
  */
 
 function route (app, path = DEFAULT_PATH) {
-  let controllersPath = join(cwd, path.controllers);
-  let filtersPath = join(cwd, path.filters);
+  const CONTROLLERS_PATH = join(CWD, path.controllers);
+  const FILTERS_PATH = join(CWD, path.filters);
 
-  glob.sync(`${controllersPath}/**/*.+(coffee|js)`)
-    .map((path) => path.slice(cwd.length + 1))
-    .forEach((path) => _route(path));
+  glob.sync(`${CONTROLLERS_PATH}/**/*.+(coffee|js)`)
+    .map((_path) => _path.slice(CONTROLLERS_PATH.length + 1))
+    .forEach((_path) => {
+      let exported = require(`${CONTROLLERS_PATH}/${_path}`);
+      let url = `/${_path.split('.')[0]}`;
+      let outterFilters = [];
+      if (util.isArray(exported.filters)) {
+        exported.filters.forEach((filter) => outFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
+      }
+
+      METHODS.forEach((method) => {
+        if (typeof exported[method] === 'function') {
+          let innerFilters = [];
+          if (util.isArray(exported[method].filters)) {
+            exported[method].filters.forEach((filter) => innerFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
+          }
+          outterFilters.unshift(url);
+          innerFilters.push(exported[method]);
+          router[method].apply(router, outterFilters.concat(innerFilters));
+        }
+      });
+    });
 
   app.use(router.routes());
   app.use(router.allowedMethods());
-};
-
-/**
- * add filters and controllers
- * @param {string} path
- * @private
- */
-
-function _route (path) {
-  let exported = require(`${cwd}/${path}`);
-  let url = `/${path.split('.')[0]}`;
-  let outterFilters = [];
-  if (util.isArray(exported.filters)) {
-    exported.filters.forEach((filter) => outFilters.push(require(`${filtersPath}/${path}`)[filter]));
-  }
-
-  METHODS.forEach((method) => {
-    if (typeof exported[method] === 'function') {
-      let innerFilters = [];
-      if (util.isArray(exported[method].filters)) {
-        exported[method].filters.forEach((filter) => innerFilters.push(require(`${filtersPath}/${path}`)[filter]));
-      }
-      outterFilters.unshift(url);
-      innerFilters.push(exported[method]);
-      router[method].apply(router, outterFilters.concat(innerFilters));
-    }
-  });
 };
