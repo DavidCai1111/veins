@@ -43,14 +43,14 @@ function route (app, path = DEFAULT_PATH) {
       let url = `/${_path.split('.')[0]}`;
       let outterFilters = [];
       if (util.isArray(exported.filters)) {
-        exported.filters.forEach((filter) => outterFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
+        exported.filters.forEach((filter) => outterFilters.push(require(`${FILTERS_PATH}/${filter}`)));
       }
 
       METHODS.forEach((method) => {
         if (typeof exported[method] === 'function') {
           let innerFilters = [];
           if (util.isArray(exported[method].filters)) {
-            exported[method].filters.forEach((filter) => innerFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
+            exported[method].filters.forEach((filter) => innerFilters.push(require(`${FILTERS_PATH}/${filter}`)));
           }
 
           innerFilters.push(exported[method]);
