@@ -17,7 +17,7 @@ describe('test veins', function () {
       venis.route(app);
     });
 
-    it('method: get', function (done) {
+    it('get & outterFilters & innerFilters', function (done) {
       request(app.listen())
         .get('/controller')
         .expect(200)
@@ -27,7 +27,7 @@ describe('test veins', function () {
         });
     })
 
-    it('method: put', function (done) {
+    it('put & outterFilters', function (done) {
       request(app.listen())
         .put('/controller')
         .expect(200)
@@ -48,7 +48,7 @@ describe('test veins', function () {
       });
     });
 
-    it('method: get', function (done) {
+    it('get & outterFilters & innerFilters', function (done) {
       request(app.listen())
         .get('/controller')
         .expect(200)
@@ -58,7 +58,7 @@ describe('test veins', function () {
         });
     })
 
-    it('method: put', function (done) {
+    it('put & outterFilters', function (done) {
       request(app.listen())
         .put('/controller')
         .expect(200)
