@@ -4,7 +4,7 @@
   "description": "A koa router middleware for RESTful API basing on the folder path",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/babel index.js -o veins.js && mocha --harmony_arrow_functions",
+    "test": "./node_modules/.bin/babel index.js -o veins.js && istanbul cover _mocha -- --harmony_arrow_functions",
     "compile": "babel index.js -o veins.js",
     "dev": "babel --watch index.js -o venis.js",
     "cov": "istanbul cover _mocha"
