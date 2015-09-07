@@ -43,7 +43,7 @@ function route (app, path = DEFAULT_PATH) {
       let url = `/${_path.split('.')[0]}`;
       let outterFilters = [];
       if (util.isArray(exported.filters)) {
-        exported.filters.forEach((filter) => outFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
+        exported.filters.forEach((filter) => outterFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
       }
 
       METHODS.forEach((method) => {
@@ -52,9 +52,9 @@ function route (app, path = DEFAULT_PATH) {
           if (util.isArray(exported[method].filters)) {
             exported[method].filters.forEach((filter) => innerFilters.push(require(`${FILTERS_PATH}/${_path}`)[filter]));
           }
-          outterFilters.unshift(url);
+
           innerFilters.push(exported[method]);
-          router[method].apply(router, outterFilters.concat(innerFilters));
+          router[method].apply(router, [url].concat(outterFilters).concat(innerFilters));
         }
       });
     });

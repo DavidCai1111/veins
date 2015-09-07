@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --harmony_arrow_functions",
     "compile": "babel index.js -o veins.js",
-    "dev": "babel --watch index.js -o venis.js"
+    "dev": "babel --watch index.js -o venis.js",
+    "cov": "istanbul cover _mocha"
   },
   "repository": {
     "type": "git",

@@ -15,14 +15,25 @@ describe('test veins', function () {
   });
 
   describe('controllers', function () {
-    it('controllers function', function (done) {
+    it('get', function (done) {
       request(app.listen())
         .get('/controller')
         .expect(200)
-        .end((err, res) => {
+        .end(function (err, res) {
           res.text.should.be.eql('get');
           done();
         });
     })
   });
+
+  it('put', function (done) {
+    request(app.listen())
+      .put('/controller')
+      .expect(200)
+      .end(function (err, res) {
+        res.text.should.be.eql('put');
+        done();
+      });
+  });
+  
 });
