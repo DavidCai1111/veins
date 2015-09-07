@@ -36,7 +36,7 @@ function route (app, path = DEFAULT_PATH) {
   const CONTROLLERS_PATH = join(CWD, path.controllers);
   const FILTERS_PATH = join(CWD, path.filters);
 
-  glob.sync(`${CONTROLLERS_PATH}/**/*.+(coffee|js)`)
+  glob.sync(`${CONTROLLERS_PATH}/**/*.js`)
     .map((_path) => _path.slice(CONTROLLERS_PATH.length + 1))
     .forEach((_path) => {
       let exported = require(`${CONTROLLERS_PATH}/${_path}`);
