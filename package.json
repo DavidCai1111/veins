@@ -1,6 +1,6 @@
 {
   "name": "veins",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A koa router middleware for RESTful API basing on the folder path",
   "main": "veins.js",
   "scripts": {
