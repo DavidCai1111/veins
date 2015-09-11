@@ -4,9 +4,11 @@ exports.get = function* (next) {
   } else {
     this.body = 'get';
   }
+  this.body += ` id:${this.params.id}`;
 };
 
 exports.get.filters = ['getFilter'];
+exports.get.params = ':id'
 
 exports.post = function* (next) {
   if (this.body !== undefined) {

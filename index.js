@@ -2,7 +2,6 @@
 
 let {join} = require('path');
 let assert = require('assert');
-let util = require('util');
 let glob = require('glob');
 let router = require('koa-router')();
 
@@ -40,16 +39,22 @@ function route (app, path = DEFAULT_PATH) {
     .map((_path) => _path.slice(CONTROLLERS_PATH.length + 1))
     .forEach((_path) => {
       let exported = require(`${CONTROLLERS_PATH}/${_path}`);
-      let url = `/${_path.split('.')[0]}`;
       let outterFilters = [];
-      if (util.isArray(exported.filters)) {
+
+      if (Array.isArray(exported.filters)) {
         exported.filters.forEach((filter) => outterFilters.push(require(`${FILTERS_PATH}/${filter}`)));
       }
 
       METHODS.forEach((method) => {
+        let url = `/${_path.split('.')[0]}`;
+
         if (typeof exported[method] === 'function') {
+          if (typeof exported[method].params === 'string') {
+            url = join(url, exported[method].params);
+          }
+
           let innerFilters = [];
-          if (util.isArray(exported[method].filters)) {
+          if (Array.isArray(exported[method].filters)) {
             exported[method].filters.forEach((filter) => innerFilters.push(require(`${FILTERS_PATH}/${filter}`)));
           }
 

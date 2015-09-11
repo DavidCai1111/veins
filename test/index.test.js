@@ -19,10 +19,10 @@ describe('test veins', function () {
 
     it('get & outterFilters & innerFilters', function (done) {
       request(app.listen())
-        .get('/controller')
+        .get('/controller/0')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.be.eql('filter get_filter get');
+          res.text.should.be.containEql('filter get_filter get id:0');
           done();
         });
     })
@@ -53,7 +53,7 @@ describe('test veins', function () {
         .get('/controller')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.be.eql('filter get_filter get');
+          res.text.should.be.containEql('filter get_filter get');
           done();
         });
     })

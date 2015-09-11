@@ -1,14 +1,14 @@
 {
   "name": "veins",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A koa router middleware for RESTful API basing on the folder path",
-  "main": "venis.js",
+  "main": "veins.js",
   "scripts": {
-    "test": "./node_modules/.bin/babel index.js -o veins.js && istanbul cover _mocha -- --harmony_arrow_functions",
-    "compile": "babel index.js -o veins.js",
-    "dev": "babel --watch index.js -o venis.js",
+    "test": "istanbul cover _mocha -- --harmony_arrow_functions",
+    "compile": "rm -f ./veins.js && babel index.js -o veins.js",
+    "dev": "rm -f ./veins.js && babel --watch index.js -o veins.js",
     "cov": "istanbul cover _mocha",
-    "pub": "./node_modules/.bin/babel index.js -o veins.js && npm publish"
+    "pub": "rm -f ./veins.js && ./node_modules/.bin/babel index.js -o veins.js && npm publish"
   },
   "repository": {
     "type": "git",
