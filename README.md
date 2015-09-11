@@ -100,9 +100,9 @@ exports.filters = ['auth'];
 You can add as many filters as you want!
 
 ## Params
-You can also define the URL with params:
+You can also define a URL with params:
 
-```
+```js
 //./controllers/user.js :
 exports.get = function *(next) {
   console.log(this.params.id);
@@ -116,7 +116,7 @@ exports.get.params = ':id';
 GET      /user/0
 ```
 
-All params which [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) support can be used.
+All `param syntax` which [path-to-regexp](https://www.npmjs.com/package/path-to-regexp) support can be used.
 
 ## Use customized path
 
