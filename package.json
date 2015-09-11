@@ -1,10 +1,10 @@
 {
   "name": "veins",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A koa router middleware for RESTful API basing on the folder path",
   "main": "veins.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- --harmony_arrow_functions",
+    "test": "./node_modules/.bin/babel index.js -o veins.js && istanbul cover _mocha -- --harmony_arrow_functions",
     "compile": "rm -f ./veins.js && babel index.js -o veins.js",
     "dev": "rm -f ./veins.js && babel --watch index.js -o veins.js",
     "cov": "istanbul cover _mocha",
