@@ -32,11 +32,21 @@ describe('test veins', function () {
         .put('/controller')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.be.containEql('filter')
+          res.text.should.be.containEql('filter');
           res.text.should.be.containEql('put');
           done();
         });
     });
+
+    it('index.js should be mounted to "/"', function (done) {
+      request(app.listen())
+        .get('/')
+        .expect(200)
+        .end(function (err, res) {
+          res.text.should.be.containEql('index');
+          done();
+        })
+    })
   });
 
   describe('custom path', function () {

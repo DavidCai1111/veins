@@ -48,6 +48,9 @@ function route (app, path = DEFAULT_PATH) {
       METHODS.forEach((method) => {
         let url = `/${_path.split('.')[0]}`;
 
+        // Mount '/index.js' to '/'
+        if (url === '/index') url = '/';
+
         if (typeof exported[method] === 'function') {
           if (typeof exported[method].params === 'string') {
             url = join(url, exported[method].params);
